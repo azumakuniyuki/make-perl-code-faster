@@ -1,0 +1,97 @@
+Summary of my perl5 (revision 5 version 28 subversion 1) configuration:
+   
+  Platform:
+    osname=darwin
+    osvers=16.7.0
+    archname=darwin-2level
+    uname='darwin sijodainagon.local 16.7.0 darwin kernel version 16.7.0: sun oct 28 22:30:19 pdt 2018; root:xnu-3789.73.27~1release_x86_64 x86_64 '
+    config_args='-des -Dprefix=/opt'
+    hint=recommended
+    useposix=true
+    d_sigaction=define
+    useithreads=undef
+    usemultiplicity=undef
+    use64bitint=define
+    use64bitall=define
+    uselongdouble=undef
+    usemymalloc=n
+    default_inc_excludes_dot=define
+    bincompat5005=undef
+  Compiler:
+    cc='cc'
+    ccflags ='-fno-common -DPERL_DARWIN -mmacosx-version-min=10.12 -fno-strict-aliasing -pipe -fstack-protector-strong -I/usr/local/include -DPERL_USE_SAFE_PUTENV'
+    optimize='-O3'
+    cppflags='-fno-common -DPERL_DARWIN -mmacosx-version-min=10.12 -fno-strict-aliasing -pipe -fstack-protector-strong -I/usr/local/include'
+    ccversion=''
+    gccversion='4.2.1 Compatible Apple LLVM 9.0.0 (clang-900.0.39.2)'
+    gccosandvers=''
+    intsize=4
+    longsize=8
+    ptrsize=8
+    doublesize=8
+    byteorder=12345678
+    doublekind=3
+    d_longlong=define
+    longlongsize=8
+    d_longdbl=define
+    longdblsize=16
+    longdblkind=3
+    ivtype='long'
+    ivsize=8
+    nvtype='double'
+    nvsize=8
+    Off_t='off_t'
+    lseeksize=8
+    alignbytes=8
+    prototype=define
+  Linker and Libraries:
+    ld='cc'
+    ldflags =' -mmacosx-version-min=10.12 -fstack-protector-strong -L/usr/local/lib'
+    libpth=/usr/local/lib /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/lib /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib /usr/lib
+    libs=-lpthread -ldbm -ldl -lm -lutil -lc
+    perllibs=-lpthread -ldl -lm -lutil -lc
+    libc=
+    so=dylib
+    useshrplib=false
+    libperl=libperl.a
+    gnulibc_version=''
+  Dynamic Linking:
+    dlsrc=dl_dlopen.xs
+    dlext=bundle
+    d_dlsymun=undef
+    ccdlflags=' '
+    cccdlflags=' '
+    lddlflags=' -mmacosx-version-min=10.12 -bundle -undefined dynamic_lookup -L/usr/local/lib -fstack-protector-strong'
+
+
+Characteristics of this binary (from libperl): 
+  Compile-time options:
+    HAS_TIMES
+    PERLIO_LAYERS
+    PERL_COPY_ON_WRITE
+    PERL_DONT_CREATE_GVSV
+    PERL_MALLOC_WRAP
+    PERL_OP_PARENT
+    PERL_PRESERVE_IVUV
+    PERL_USE_SAFE_PUTENV
+    USE_64_BIT_ALL
+    USE_64_BIT_INT
+    USE_LARGE_FILES
+    USE_LOCALE
+    USE_LOCALE_COLLATE
+    USE_LOCALE_CTYPE
+    USE_LOCALE_NUMERIC
+    USE_LOCALE_TIME
+    USE_PERLIO
+    USE_PERL_ATOF
+  Built under darwin
+  Compiled at Jan 27 2019 11:42:26
+  %ENV:
+    PERL_BADLANG="0"
+  @INC:
+    /opt/lib/perl5/site_perl/5.28.1/darwin-2level
+    /opt/lib/perl5/site_perl/5.28.1
+    /opt/lib/perl5/5.28.1/darwin-2level
+    /opt/lib/perl5/5.28.1
+    /opt/lib/perl5/site_perl/5.26.0
+    /opt/lib/perl5/site_perl
