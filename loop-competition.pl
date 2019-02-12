@@ -5,22 +5,19 @@ use warnings;
 use Benchmark ':all';
 use Test::More 'no_plan';
 
-my @List1 = ( 1 .. (1<<10) );
-my @List2 = ( 1 .. (1<<10) );
-my @List3 = ( 1 .. (1<<10) );
-my @List4 = ( 1 .. (1<<10) );
-
 sub loop1f {
     my $v = 0;
-    for( my $e = 0; $e < 1024; $e++ ) {
-        $v++ if $List1[$e] % 2 == 0;
+    my @p = (1..(1<<6));
+    for( my $e = 0; $e < scalar(@p); $e++ ) {
+        $v++ if $p[$e] % 2 == 0;
     }
     return $v;
 }
 
 sub loop2e {
     my $v = 0;
-    for my $e ( @List2 ) {
+    my @p = (1..(1<<6));
+    for my $e ( @p ) {
         $v++ if $e % 2 == 0;
     }
     return $v;
@@ -28,7 +25,8 @@ sub loop2e {
 
 sub loop3w {
     my $v = 0;
-    while( my $e = shift @List3 ) {
+    my @p = (1..(1<<6));
+    while( my $e = shift @p ) {
         $v++ if $e % 2 == 0;
     }
     return $v;
@@ -36,14 +34,15 @@ sub loop3w {
 
 sub loop4g {
     my $v = 0;
-    $v = grep { $_ % 2 == 0 } @List4;
+    my @p = (1..(1<<6));
+    $v = grep { $_ % 2 == 0 } @p;
     return $v;
 }
 
-is loop1f(), 512;
-is loop2e(), 512;
-is loop3w(), 512;
-is loop4g(), 512;
+is loop1f(), 32;
+is loop2e(), 32;
+is loop3w(), 32;
+is loop4g(), 32;
 
 printf("Running with Perl %s on %s\n%s\n", $^V, $^O, '-' x 80);
 cmpthese(9e4, {
@@ -56,21 +55,27 @@ cmpthese(9e4, {
 
 __END__
 
+Running with Perl v5.18.2 on darwin
+--------------------------------------------------------------------------------
+                Rate for(my ...) while(my .. foreach my  grep { .. }
+for(my ...)  64286/s          --         -9%        -36%        -45%
+while(my ..  70866/s         10%          --        -29%        -39%
+foreach my  100000/s         56%         41%          --        -14%
+grep { .. } 116883/s         82%         65%         17%          --
+
 Running with Perl v5.22.1 on darwin
 --------------------------------------------------------------------------------
-            (warning: too few iterations for a reliable count)
-                 Rate for(my ...) foreach my  grep { .. } while(my ..
-for(my ...)    8708/s          --        -14%        -34%       -100%
-foreach my    10152/s         17%          --        -23%       -100%
-grep { .. }   13187/s         51%         30%          --       -100%
-while(my .. 3000000/s      34350%      29450%      22650%          --
+                Rate for(my ...) while(my .. foreach my  grep { .. }
+for(my ...)  73171/s          --        -10%        -41%        -46%
+while(my ..  81081/s         11%          --        -34%        -41%
+foreach my  123288/s         68%         52%          --        -10%
+grep { .. } 136364/s         86%         68%         11%          --
 
 Running with Perl v5.28.1 on darwin
 --------------------------------------------------------------------------------
-            (warning: too few iterations for a reliable count)
-                 Rate for(my ...) foreach my  grep { .. } while(my ..
-for(my ...)    9202/s          --        -24%        -32%       -100%
-foreach my    12146/s         32%          --        -11%       -100%
-grep { .. }   13595/s         48%         12%          --       -100%
-while(my .. 4500000/s      48800%      36950%      33000%          --
+                Rate for(my ...) while(my .. foreach my  grep { .. }
+for(my ...)  81081/s          --         -9%        -44%        -47%
+while(my ..  89109/s         10%          --        -39%        -42%
+foreach my  145161/s         79%         63%          --         -5%
+grep { .. } 152542/s         88%         71%          5%          --
 
