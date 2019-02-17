@@ -22,6 +22,13 @@ cmpthese(6e6, {
     }
 );
 
+eval { require Devel::Size };
+unless( $@ ) {
+    printf("\n");
+    printf("%s %6d bytes\n", '$Hash->{...}', Devel::Size::total_size($Hash));
+    printf("%s %6d bytes\n", '$List->[...]', Devel::Size::total_size($List));
+}
+
 __END__
 
 Running with Perl v5.22.1 on darwin
