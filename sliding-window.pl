@@ -117,18 +117,3 @@ cmpthese(6e3, {
 );
 
 __END__
-
-Running with Perl v5.16.3 on linux
---------------------------------------------------------------------------------
-                       Rate Substring to array   Array to array        Substring
-Substring to array   6375/s                 --             -81%             -97%
-Array to array      33426/s               424%               --             -84%
-Substring          202703/s              3080%             506%               --
-
-Running with Perl v5.22.1 on linux
---------------------------------------------------------------------------------
-                       Rate Substring to array   Array to array        Substring
-Substring to array  11519/s                 --             -72%             -94%
-Array to array      41265/s               258%               --             -78%
-Substring          191693/s              1564%             365%               --
-
