@@ -5,6 +5,8 @@ use strict;
 use warnings;
 use Benchmark ':all';
 use Test::More 'no_plan';
+use Digest::MD5 qw/md5/;
+use Digest::CRC qw/crc16 crc32 crc64/;
 
 srand(42); # keep the test nonrandom
 
@@ -62,11 +64,12 @@ sub arraysFromArrays{
 sub register{
   my $str = shift;
   my $k=21; # 21-mers
+  my $length     = length($str);
   my $numWindows = length($str)-$k;
   my @substr = ();
   my @register = split(//, $str, $k+1);
   pop(@register); # remove chunk of unsplit string in last element
-  for(my $i = 0; $i < $numWindows; $i++){
+  for(my $i = $k; $i < $length; $i++){
     push(@substr,
       join("", @register)
     );
@@ -74,9 +77,36 @@ sub register{
     # Shift the register
     shift(@register);
     push(@register,
-      substr($str,$i+$k,1)
+      substr($str,$i,1)
     );
   }
+  return \@substr;
+}
+
+sub registerWithHash{
+  my $str = shift;
+  my $k=21; # 21-mers
+  my $numWindows = length($str)-$k;
+  my @substr = ();
+  my @register = split(//, $str, $k+1);
+  pop(@register); # remove chunk of unsplit string in last element
+  my %hashmap;
+  for(my $i = 0; $i < $numWindows; $i++){
+    my $substr = join("", @register);
+    my $hash = crc16($substr);
+    push(@substr,$hash);
+    $hashmap{$hash} = $substr;
+
+    # Shift the register
+    shift(@register);
+    push(@register, substr($str,$i+$k,1));
+  }
+  for(@substr){
+    $_=$hashmap{$_};
+  }
+  #for(my $i=0;$i<$numWindows;$i++){
+  #  $register[$i] = $hashmap{$register[$i]};
+  #}
   return \@substr;
 }
 
@@ -87,6 +117,7 @@ my $kmers1 = substrings($str);
 my $kmers2 = arrays($str);
 my $kmers3 = arraysFromArrays(\@arr);
 my $kmers4 = register($str);
+my $kmers5 = registerWithHash($str);
 is( $$kmers1[0], $firstKmer, "substrings first kmer");
 is( $$kmers1[2], $thirdKmer, "substrings third kmer");
 is( $$kmers1[-1],$lastKmer,  "substrings last kmer");
@@ -105,14 +136,20 @@ is( scalar(@$kmers3), 1000 - 21, "number of kmers");
 is( $$kmers4[0], $firstKmer, "registers first kmer");
 is( $$kmers4[2], $thirdKmer, "registers third kmer");
 is( $$kmers4[-1],$lastKmer,  "registers arrays last kmer");
-is( scalar(@$kmers3), 1000 - 21, "number of kmers");
+is( scalar(@$kmers4), 1000 - 21, "number of kmers");
+
+is( $$kmers5[0], $firstKmer, "registers first kmer");
+is( $$kmers5[2], $thirdKmer, "registers third kmer");
+is( $$kmers5[-1],$lastKmer,  "registers arrays last kmer");
+is( scalar(@$kmers5), 1000 - 21, "number of kmers");
 
 printf("Running with Perl %s on %s\n%s\n", $^V, $^O, '-' x 80);
 cmpthese(6e3, {
         'Substring'          => sub { substrings($str) },
-        'Substring to array' => sub { arrays($str) },
+        'SubstringToArray'   => sub { arrays($str) },
         'Array to array'     => sub { arraysFromArrays(\@arr) },
         'Registers'          => sub { register($str) },
+        'RegistersWithHash'  => sub { registerWithHash($str) },
     }
 );
 
