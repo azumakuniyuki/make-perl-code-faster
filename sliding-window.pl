@@ -154,3 +154,14 @@ cmpthese(6e3, {
 );
 
 __END__
+
+Running with Perl v5.18.2 on darwin
+--------------------------------------------------------------------------------
+                    Rate RegistersWithHash SubstringToArray Array to array Registers Substring
+RegistersWithHash 1.81/s                --            -100%          -100%     -100%     -100%
+SubstringToArray   381/s            21021%               --           -27%      -58%      -84%
+Array to array     526/s            29018%              38%             --      -41%      -78%
+Registers          898/s            49636%             135%            71%        --      -62%
+Substring         2344/s           129679%             514%           346%      161%        --
+1..20
+
