@@ -17,12 +17,6 @@ for(1..1000){
 }
 
 my @arr = split(//, $str);
-my @hashArr = map{crc16($_)} @arr;
-
-my %hashmap;
-for(@ABC){
-  $hashmap{crc16($_)}=$_;
-}
 
 sub substrings{
   my $str = shift;
@@ -57,9 +51,12 @@ sub arraysFromArrays{
 
   my @substr = ();
   for(my $i = 0; $i < $numWindows; $i++){
+    #my $str = join("", @$arr[0..$k-1]);
+    #die "$str $i" if(length($str) < $k);
     push(@substr,
       join("", @$arr[$i..$i+$k-1])
     );
+    #shift(@$arr);
   }
   return \@substr;
 }
@@ -107,27 +104,9 @@ sub registerWithHash{
   for(@substr){
     $_=$hashmap{$_};
   }
-  return \@substr;
-}
-
-sub registerWithCharHash{
-  my $str = shift;
-  my $k=21; # 21-mers
-  my $numWindows = length($str)-$k;
-  my @substr = ();
-  my @register = map{crc16($_)} split(//, $str, $k+1);
-  pop(@register); # remove chunk of unsplit string in last element
-  for(my $i = 0; $i < $numWindows; $i++){
-    push(@substr,[@register]);
-
-    # Shift the register
-    shift(@register);
-    push(@register, crc16(substr($str,$i+$k,1)));
-  }
-
-  for(@substr){
-    $_ = join("", map{$hashmap{$_}} @$_);
-  }
+  #for(my $i=0;$i<$numWindows;$i++){
+  #  $register[$i] = $hashmap{$register[$i]};
+  #}
   return \@substr;
 }
 
@@ -139,7 +118,6 @@ my $kmers2 = arrays($str);
 my $kmers3 = arraysFromArrays(\@arr);
 my $kmers4 = register($str);
 my $kmers5 = registerWithHash($str);
-my $kmers6 = registerWithCharHash($str);
 is( $$kmers1[0], $firstKmer, "substrings first kmer");
 is( $$kmers1[2], $thirdKmer, "substrings third kmer");
 is( $$kmers1[-1],$lastKmer,  "substrings last kmer");
@@ -165,11 +143,6 @@ is( $$kmers5[2], $thirdKmer, "registers third kmer");
 is( $$kmers5[-1],$lastKmer,  "registers arrays last kmer");
 is( scalar(@$kmers5), 1000 - 21, "number of kmers");
 
-is( $$kmers6[0], $firstKmer, "registers first kmer");
-is( $$kmers6[2], $thirdKmer, "registers third kmer");
-is( $$kmers6[-1],$lastKmer,  "registers arrays last kmer");
-is( scalar(@$kmers6), 1000 - 21, "number of kmers");
-
 printf("Running with Perl %s on %s\n%s\n", $^V, $^O, '-' x 80);
 cmpthese(6e3, {
         'Substring'          => sub { substrings($str) },
@@ -177,7 +150,6 @@ cmpthese(6e3, {
         'Array to array'     => sub { arraysFromArrays(\@arr) },
         'Registers'          => sub { register($str) },
         'RegistersWithHash'  => sub { registerWithHash($str) },
-        'RegistersWithCharHash'=> sub { registerWithCharHash($str) },
     }
 );
 

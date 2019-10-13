@@ -14,15 +14,6 @@ sub loop1f {
     return $v;
 }
 
-sub loop2e2 {
-    my $v = 0;
-    my @p = (1..(1<<6));
-    foreach my $e ( @p ) {
-        $v++ if $e % 2 == 0;
-    }
-    return $v;
-}
-
 sub loop2e {
     my $v = 0;
     my @p = (1..(1<<6));
@@ -56,8 +47,7 @@ is loop4g(), 32;
 printf("Running with Perl %s on %s\n%s\n", $^V, $^O, '-' x 80);
 cmpthese(9e4, {
         'for(my ...)' => sub { loop1f() },
-        'for my'     => sub { loop2e() },
-        'foreach my '=> sub { loop2e2() },
+        'foreach my ' => sub { loop2e() },
         'while(my ..' => sub { loop3w() },
         'grep { .. }' => sub { loop4g() },
     }
