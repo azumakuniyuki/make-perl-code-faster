@@ -57,12 +57,21 @@ sub la {
     return $v;
 }
 
+sub sr {
+    my $v = {};
+    %$v = map { split /:\s*/, $_, 2 }
+          split /\n/, $Headers2 =~ s/\n\s+/ /gr;
+    return $v;
+}
+
 my $re = em();
 my $rl = la();
+my $sr = sr();
 print Data::Dumper::Dumper $re;
 print Data::Dumper::Dumper $rl;
+print Data::Dumper::Dumper $sr;
 
-for my $e ( $re, $rl ) {
+for my $e ( $re, $rl, $sr ) {
     is $e->{'Diagnostic-Code'}, 'SMTP; 550 5.1.1 The user does not exist in virtual mailbox list of our server';
     is $e->{'Action'}, 'failed';
     is $e->{'Remote-MTA'}, 'DNS; mx.example.jp';
@@ -74,6 +83,7 @@ printf("Running with Perl %s on %s\n%s\n", $^V, $^O, '-' x 80);
 cmpthese(6e5, {
         'for $e =~ /.../' => sub { em() },
         '%e =~ /...(?!)/' => sub { la() },
+        'map{split}split' => sub { sr() },
     }
 );
 
