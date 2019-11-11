@@ -45,6 +45,7 @@ sub em {
 sub la {
     my $v = {};
 
+    # https://gist.github.com/xtetsuji/b080e1f5551d17242f6415aba8a00239
     %$v = $Headers2 =~ m{
         ^           # 冒頭か改行の直後という意味での行頭から
         $Required   # ヘッダ名があり
