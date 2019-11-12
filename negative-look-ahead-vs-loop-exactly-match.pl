@@ -89,16 +89,24 @@ cmpthese(6e5, {
 
 __END__
 $VAR1 = {
-          'Remote-MTA' => 'DNS; mx.example.jp',
-          'Status' => '5.1.1',
           'Final-Recipient' => 'RFC822; neko@example.jp',
+          'Remote-MTA' => 'DNS; mx.example.jp',
           'Diagnostic-Code' => 'SMTP; 550 5.1.1 The user does not exist in virtual mailbox list of our server',
-          'Action' => 'failed'
+          'Action' => 'failed',
+          'Status' => '5.1.1'
+        };
+$VAR1 = {
+          'Diagnostic-Code' => 'SMTP; 550 5.1.1 The user does not exist in virtual mailbox list of our server',
+          'Remote-MTA' => 'DNS; mx.example.jp',
+          'Final-Recipient' => 'RFC822; neko@example.jp',
+          'Action' => 'failed',
+          'Status' => '5.1.1'
         };
 $VAR1 = {
           'Remote-MTA' => 'DNS; mx.example.jp',
-          'Diagnostic-Code' => 'SMTP; 550 5.1.1 The user does not exist in virtual mailbox list of our server',
           'Final-Recipient' => 'RFC822; neko@example.jp',
+          'Diagnostic-Code' => 'SMTP; 550 5.1.1 The user does not exist in virtual mailbox list of our server',
+          'Last-Attempt-Date' => 'Thu, 6 Jul 2017 20:27:19 +0900',
           'Action' => 'failed',
           'Status' => '5.1.1'
         };
@@ -112,9 +120,16 @@ ok 7
 ok 8
 ok 9
 ok 10
+ok 11
+ok 12
+ok 13
+ok 14
+ok 15
 Running with Perl v5.30.0 on darwin
 --------------------------------------------------------------------------------
-                    Rate for $e =~ /.../ %e =~ /...(?!)/
-for $e =~ /.../  62305/s              --            -56%
-%e =~ /...(?!)/ 140187/s            125%              --
-1..10
+                    Rate for $e =~ /.../ map{split}split %e =~ /...(?!)/
+for $e =~ /.../  65574/s              --            -48%            -55%
+map{split}split 126582/s             93%              --            -12%
+%e =~ /...(?!)/ 144578/s            120%             14%              --
+1..15
+
