@@ -50,3 +50,8 @@ Running with Perl v5.28.1 on darwin
 =~ /[Nn]eko/  975610/s           --          -4%
 =~ /neko/i   1011804/s           4%           --
 
+Running with Perl v5.30.0 on darwin
+--------------------------------------------------------------------------------
+                  Rate =~ /[Nn]eko/   =~ /neko/i
+=~ /[Nn]eko/ 1382488/s           --          -1%
+=~ /neko/i   1398601/s           1%           --
