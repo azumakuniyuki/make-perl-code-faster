@@ -3,9 +3,6 @@ name: unit testing
 on: 
   push:
     branches: [master, unit-testing]
-  pull_request:
-    branches: *
-
 
 jobs:
   build:
